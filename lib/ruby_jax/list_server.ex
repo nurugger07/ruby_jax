@@ -22,12 +22,16 @@ defmodule ListServer do
     :gen_server.call :list, :items
   end
 
+  def crash do
+    :gen_server.cast :list, :crash
+  end
+
   ### GenServer API
   def init(items) do
     {:ok, items}
   end
 
-  def handle_cast(:clear, list) do
+  def handle_cast(:clear, _list) do
     {:noreply, []}
   end
 
@@ -41,5 +45,9 @@ defmodule ListServer do
 
   def handle_call(:items, _from, list) do
     {:reply, list, list}
+  end
+
+  def handle_cast(:crash) do
+    1 = 2
   end
 end
