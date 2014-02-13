@@ -1,23 +1,25 @@
 defmodule RubyJaxTest do
   use ExUnit.Case
 
+  setup do
+    ListServer.start_link
+    ListServer.clear
+  end
+
   test :clear_list do
-    list = ListServer.start_link
-    assert ListServer.items(list) == []
+    assert ListServer.items == []
   end
 
   test :add_items_to_list do
-    list = ListServer.start_link
-    ListServer.add(list, "books")
-    assert ["books"] == ListServer.items(list)
+    ListServer.add("books")
+    assert ["books"] == ListServer.items
   end
 
   test :remove_items_from_list do
-    list = ListServer.start_link
-    ListServer.add(list, "books")
-    ListServer.add(list, "magazines")
-    ListServer.remove(list, "books")
-    assert ["magazines"] == ListServer.items(list)
+    ListServer.add("books")
+    ListServer.add("magazines")
+    ListServer.remove("books")
+    assert ["magazines"] == ListServer.items
   end
 
 end
