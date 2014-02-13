@@ -3,20 +3,23 @@ defmodule ListServer do
 
   # Public API
   def start_link(items\\[]) do
-    { :ok, list } = :gen_server.start_link(__MODULE__, items, [])
-    list
+    :gen_server.start_link({ :local, :list }, __MODULE__, items, [])
   end
 
-  def add(list, item) do
-    :gen_server.cast list, {:add, item}
+  def clear do
+    :gen_server.cast :list, :clear
   end
 
-  def remove(list, item) do
-    :gen_server.cast list, {:remove, item}
+  def add(item) do
+    :gen_server.cast :list, {:add, item}
   end
 
-  def items(list) do
-    :gen_server.call list, :items
+  def remove(item) do
+    :gen_server.cast :list, {:remove, item}
+  end
+
+  def items do
+    :gen_server.call :list, :items
   end
 
   ### GenServer API
